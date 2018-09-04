@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/input_bar_ll"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="12dp"
+    android:paddingBottom="12dp"
+    android:gravity="center_vertical"
+    android:focusableInTouchMode="true">
+
+    <EditText
+        android:id="@+id/input_et"
+        android:hint="讲出你的心声"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/live_play_comment_edit_bg"
+        android:textColorHint="#CDCDCD"
+        android:textSize="14sp"
+        android:text=""
+        android:layout_marginRight="-54dp"
+        android:paddingRight="54dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:maxHeight="80dp"/>
+    <ImageButton
+            android:id="@+id/send_btn"
+            android:layout_width="54dp"
+            android:layout_height="30dp"
+            android:src="@mipmap/live_play_comment_edit_img"
+            android:layout_marginRight="3dp"
+            android:padding="12dp"
+            android:background="@null"/>
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@mipmap/live_play_comment_smail"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+
+        />
+
+</LinearLayout>
