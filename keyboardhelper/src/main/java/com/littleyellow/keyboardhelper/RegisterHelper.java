@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.graphics.Rect;
 import android.os.Build;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.View;
 
 /**
