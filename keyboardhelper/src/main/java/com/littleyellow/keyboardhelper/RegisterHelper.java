@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Rect;
 import android.os.Build;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.View;
 
 /**
@@ -17,16 +18,18 @@ public class RegisterHelper {
             return;
         }
         InputMethodHelper.assistActivity(activity, new InputMethodHelper.OnInputMethodListener() {
+
+            float priBottom = 0;
+
             @Override
             public void onInputMethodStatusChanged(Rect keyboardRect, boolean show) {
                 if(show){
-                    int[] location = new int[2];
-                    inputBar.getLocationOnScreen(location);
-                    float priBottom = location[1]+inputBar.getHeight();
-                    int top = keyboardRect.top;
-                    if(priBottom > top) {
-                        inputBar.setTranslationY(top - priBottom);
+                    if(0==priBottom){
+                        int[] location = new int[2];
+                        inputBar.getLocationOnScreen(location);
+                        priBottom= location[1]+inputBar.getHeight();
                     }
+                    inputBar.setTranslationY(keyboardRect.top - priBottom);
                 }else{
                     inputBar.setTranslationY(0);
                 }
@@ -51,16 +54,16 @@ public class RegisterHelper {
             return;
         }
         InputMethodHelper.assistFragment(fragment, new InputMethodHelper.OnInputMethodListener() {
+            float priBottom = 0;
             @Override
             public void onInputMethodStatusChanged(Rect keyboardRect, boolean show) {
                 if(show){
-                    int[] location = new int[2];
-                    inputBar.getLocationOnScreen(location);
-                    float priBottom = location[1]+inputBar.getHeight();
-                    int top = keyboardRect.top;
-                    if(priBottom > top) {
-                        inputBar.setTranslationY(top - priBottom);
+                    if(0==priBottom){
+                        int[] location = new int[2];
+                        inputBar.getLocationOnScreen(location);
+                        priBottom= location[1]+inputBar.getHeight();
                     }
+                    inputBar.setTranslationY(keyboardRect.top - priBottom);
                 }else{
                     inputBar.setTranslationY(0);
                 }
