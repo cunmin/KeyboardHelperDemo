@@ -36,6 +36,26 @@ public class RegisterHelper {
         });
     }
 
+    public static void compatInputPanel(Activity activity,final PannelView panel){
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT||null==panel) {
+            return;
+        }
+//        InputMethodHelper.assistActivity(activity, new InputMethodHelper.OnInputMethodListener() {
+//
+//            @Override
+//            public void onInputMethodStatusChanged(Rect keyboardRect, boolean show) {
+//                if(show){
+//                    panel.setTranslationY(0);
+//                }else{
+//                    if(!panel.isShowPannel()){
+//                        int validPanelHeight = KBSharedPreferences.getDefKeyboardHeight(panel.getContext());
+//                        panel.setTranslationY(validPanelHeight);
+//                    }
+//                }
+//            }
+//        });
+    }
+
     /**
      * 要在Activity布局完成再设置Fragment,如
      * mViewPager.post(new Runnable() {

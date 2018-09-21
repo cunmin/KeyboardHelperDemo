@@ -36,6 +36,7 @@
             android:padding="12dp"
             android:background="@null"/>
     <ImageView
+        android:id="@+id/toggle_iv"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:src="@mipmap/live_play_comment_smail"

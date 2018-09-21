@@ -15,6 +15,8 @@ import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.littleyellow.keyboardhelper.utils.KBSharedPreferences;
+
 import static android.view.inputmethod.InputMethodManager.SHOW_FORCED;
 
 
@@ -39,6 +41,7 @@ public class InputMethodHelper {
                 }
                 keyboardRect.top = displayVisibleFrame.bottom;
                 keyboardRect.bottom = windowContentRect.bottom;
+                KBSharedPreferences.setDefKeyboardHeight(decorView.getContext(),keyboardRect.bottom-keyboardRect.top);
                 if (onInputMethodListener != null) {
                     onInputMethodListener.onInputMethodStatusChanged(keyboardRect, keyboardRect.height() != 0);
                 }

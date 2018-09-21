@@ -11,8 +11,32 @@
         android:layout_height="wrap_content"
         android:text="Hello World!"
         android:layout_above="@+id/input_bar_ll"/>
-    <include layout="@layout/input_bar_layout"
+
+
+    <com.littleyellow.keyboardhelper.PannelView
+        android:id="@+id/pannel_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true">
+        <include layout="@layout/input_bar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:id="@+id/pannel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#eeeeee">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_launcher"
+                android:layout_margin="10dp"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_launcher"
+                android:layout_margin="10dp"/>
+        </LinearLayout>
+    </com.littleyellow.keyboardhelper.PannelView>
+
 </RelativeLayout>
