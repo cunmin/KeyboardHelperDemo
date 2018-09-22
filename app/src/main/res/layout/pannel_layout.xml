@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.littleyellow.keyboardhelper.PannelView xmlns:android="http://schemas.android.com/apk/res/android"
+android:id="@+id/pannel_view"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_alignParentBottom="true"
+android:orientation="horizontal">
+<include layout="@layout/input_bar_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"/>
+    <!--<View-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"/>-->
+<LinearLayout
+    android:id="@+id/pannel"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eeeeee">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_launcher"
+        android:layout_margin="10dp"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_launcher"
+        android:layout_margin="10dp"/>
+</LinearLayout>
+</com.littleyellow.keyboardhelper.PannelView>

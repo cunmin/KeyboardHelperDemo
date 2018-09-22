@@ -30,9 +30,15 @@ public class PannelView extends LinearLayout{
 
     public final int STATE_PANNEL = View.GONE;
 
-    View inputBaffle;
+    private final FrameLayout frameLayout;
 
-    boolean interruptDown = false;
+    private final View inputBaffle;
+
+    private boolean interruptDown = false;
+
+    private ActionListener listener;
+
+    private EditText editText;
 
     public PannelView(Context context) {
         this(context, null);
@@ -44,11 +50,21 @@ public class PannelView extends LinearLayout{
 
     public PannelView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        frameLayout  = new FrameLayout(context);
+        inputBaffle = new View(context);
         init();
     }
 
     private void init(){
         setOrientation(VERTICAL);
+//        ViewGroup.LayoutParams layoutParams = getLayoutParams();
+//        if (layoutParams == null) {
+//            layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+//                    ViewGroup.LayoutParams.WRAP_CONTENT);
+//            setLayoutParams(layoutParams);
+//        } else {
+//            layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+//        }
     }
 
     @Override
@@ -58,45 +74,48 @@ public class PannelView extends LinearLayout{
         }
         View view = getChildAt(1);
         removeView(view);
-        FrameLayout frameLayout = new FrameLayout(getContext());
-        addView(frameLayout);
+        addView(frameLayout,ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         frameLayout.addView(view);
-        inputBaffle = new View(getContext());
         inputBaffle.setBackgroundColor(Color.WHITE);
         frameLayout.addView(inputBaffle, ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
 //        setTranslationY(ViewUtils.initHeight(frameLayout));
         ViewUtils.initHeight(frameLayout);
-        InputMethodHelper.assistActivity((Activity) getContext(), new InputMethodHelper.OnInputMethodListener() {
+        final Activity activity = (Activity) getContext();
+        InputMethodHelper.assistActivity(activity, new InputMethodHelper.OnInputMethodListener() {
 
             @Override
             public void onInputMethodStatusChanged(Rect keyboardRect, boolean show) {
-
+                EditText view = getEditText();
+                if(view!=activity.getCurrentFocus()){
+                    showDefault();
+                    return;
+                }
                 if(show){
+                    if(keyboardRect.height()!=frameLayout.getHeight()){
+                        ViewUtils.initHeight(frameLayout);
+                        if(null!=listener){
+                            listener.onHeightChange(keyboardRect.height());
+                        }
+                    }
                     setTranslationY(0);
                     setInputState();
+                    if(null!=listener){
+                        listener.onShowInput(keyboardRect.height());
+                    }
                 }else{
                     if(!isShowPannel()&&!interruptDown){
                         showDefault();
+
                     }else{
                         setPannelState();
+                        if(null!=listener){
+                            listener.onShowPannel(frameLayout.getHeight());
+                        }
                     }
                 }
                 interruptDown = false;
             }
         });
-    }
-
-
-    public boolean isShowDefault(){
-        return STATE_DEFAULT == inputBaffle.getVisibility();
-    }
-
-    public boolean isShowInput(){
-        return STATE_INPUT == inputBaffle.getVisibility();
-    }
-
-    public boolean isShowPannel(){
-        return STATE_PANNEL == inputBaffle.getVisibility();
     }
 
     private void setDefalutState(){
@@ -111,33 +130,11 @@ public class PannelView extends LinearLayout{
         inputBaffle.setVisibility(STATE_PANNEL);
     }
 
-    public void showPannel(){
-        interruptDown = true;
-        hideSoftInput(getContext());
-    }
-
-    public void showInput(){
-        EditText view = forSearch(getChildAt(0));
-        if(null!=view){
-            showSoftInput(getContext(),view);
+    private EditText getEditText(){
+        if(null==editText){
+            editText = forSearch(getChildAt(0));
         }
-    }
-
-    public void showDefault(){
-        int validPanelHeight = KBSharedPreferences.getDefKeyboardHeight(getContext());
-        setTranslationY(validPanelHeight);
-        setDefalutState();
-    }
-
-    public void toggle(){
-        if(isShowDefault()){
-            setTranslationY(0);
-            setPannelState();
-        }else if(isShowInput()){
-            showPannel();
-        }else {
-            showInput();
-        }
+        return editText;
     }
 
     private EditText forSearch(View view){
@@ -181,5 +178,60 @@ public class PannelView extends LinearLayout{
             }
         }
         return super.dispatchKeyEvent(event);
+    }
+
+    public boolean isShowDefault(){
+        return STATE_DEFAULT == inputBaffle.getVisibility();
+    }
+
+    public boolean isShowInput(){
+        return STATE_INPUT == inputBaffle.getVisibility();
+    }
+
+    public boolean isShowPannel(){
+        return STATE_PANNEL == inputBaffle.getVisibility();
+    }
+
+    public int getShowState(){
+        return inputBaffle.getVisibility();
+    }
+
+    public void showPannel(){
+        interruptDown = true;
+        hideSoftInput(getContext());
+    }
+
+    public void showInput(){
+        EditText view = getEditText();
+        if(null!=view){
+            showSoftInput(getContext(),view);
+        }
+    }
+
+    public void showDefault(){
+        int validPanelHeight = KBSharedPreferences.getDefKeyboardHeight(getContext());
+        setTranslationY(validPanelHeight);
+        setDefalutState();
+        if(null!=listener){
+            listener.onShowDefault(validPanelHeight);
+        }
+    }
+
+    public void toggle(){
+        if(isShowDefault()){
+            setTranslationY(0);
+            setPannelState();
+            if(null!=listener){
+                listener.onShowPannel(frameLayout.getHeight());
+            }
+        }else if(isShowInput()){
+            showPannel();
+        }else {
+            showInput();
+        }
+    }
+
+    public void setListener(ActionListener listener) {
+        this.listener = listener;
     }
 }

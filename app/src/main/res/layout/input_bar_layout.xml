@@ -21,12 +21,12 @@
         android:textColorHint="#CDCDCD"
         android:textSize="14sp"
         android:text=""
+        android:maxLines="3"
         android:layout_marginRight="-54dp"
         android:paddingRight="54dp"
         android:paddingLeft="10dp"
         android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:maxHeight="80dp"/>
+        android:paddingBottom="10dp"/>
     <ImageButton
             android:id="@+id/send_btn"
             android:layout_width="54dp"
@@ -34,12 +34,13 @@
             android:src="@mipmap/live_play_comment_edit_img"
             android:layout_marginRight="3dp"
             android:padding="12dp"
-            android:background="@null"/>
+            android:background="@null"
+            android:visibility="invisible"/>
     <ImageView
         android:id="@+id/toggle_iv"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:src="@mipmap/live_play_comment_smail"
+        android:src="@mipmap/icon_face"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
 

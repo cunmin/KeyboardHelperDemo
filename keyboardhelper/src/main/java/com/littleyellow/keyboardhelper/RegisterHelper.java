@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.graphics.Rect;
 import android.os.Build;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.View;
+
+import java.util.HashMap;
 
 /**
  * Created by 小黄 on 2018/9/4.
@@ -88,6 +91,51 @@ public class RegisterHelper {
                 }
             }
         });
+    }
+
+    public static void compatScrollInput(final Activity activity, final ScrollListener listener){
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            return;
+        }
+        InputMethodHelper.assistActivity(activity, new InputMethodHelper.OnInputMethodListener() {
+
+            HashMap<View,Float> bottoms = new HashMap<View, Float>();
+
+            @Override
+            public void onInputMethodStatusChanged(Rect keyboardRect, boolean show) {
+                Log.e("Input",show+"--->"+keyboardRect.top);
+                View inputBar = null==listener?null:listener.getInputBar(activity.getCurrentFocus());
+                if(null==inputBar){
+                    return;
+                }
+                if(show){
+                    float priBottom;
+                    if(bottoms.containsKey(inputBar)){
+                        priBottom = bottoms.get(inputBar);
+                    }else {
+                        int[] location = new int[2];
+                        inputBar.getLocationOnScreen(location);
+                        priBottom= location[1]+inputBar.getHeight();
+                        bottoms.put(inputBar,priBottom);
+                    }
+//                    if(priBottom > top) {
+                    float y = keyboardRect.top - priBottom;
+                    if(null==listener||!listener.onScroll(keyboardRect,y)){
+                        inputBar.setTranslationY(y);
+                    }
+//                    }
+                }else{
+                    if(null==listener||!listener.onScroll(keyboardRect,0)){
+                        inputBar.setTranslationY(0);
+                    }
+                }
+            }
+        });
+    }
+
+    public interface ScrollListener{
+        boolean onScroll(Rect keyboardRect,float y);
+        View getInputBar(View focusView);
     }
 
 }
