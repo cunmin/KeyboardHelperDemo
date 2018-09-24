@@ -1,6 +1,7 @@
 package com.littleyellow.keyboardhelperdemo;
 
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onShowInput(int keyboardHeight) {
+            public void onShowInput(Rect keyboardRect, int keyboardHeight) {
                 Log.e("PannelView","onShowInput"+keyboardHeight);
                 toggle_iv.setImageResource(R.mipmap.icon_face);
             }
@@ -75,6 +76,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this,ScrollViewActivity.class));
+            }
+        });
+        findViewById(R.id.CommentListActivity).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,CommentListActivity.class));
             }
         });
 

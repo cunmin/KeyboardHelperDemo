@@ -23,5 +23,12 @@
         android:layout_height="wrap_content"
         android:text="ScrollViewActivity"
         android:layout_below="@+id/edittext"/>
+    <Button
+        android:id="@+id/CommentListActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="评论列表"
+        android:layout_below="@+id/ScrollViewActivity"/>
+
     <include layout="@layout/pannel_layout"/>
 </RelativeLayout>

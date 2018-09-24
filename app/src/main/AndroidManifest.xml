@@ -16,6 +16,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ScrollViewActivity"/>
+        <activity android:name=".CommentListActivity"/>
     </application>
 
 </manifest>

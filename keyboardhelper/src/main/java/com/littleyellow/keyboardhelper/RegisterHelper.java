@@ -110,19 +110,25 @@ public class RegisterHelper {
                 }
                 if(show){
                     float priBottom;
-                    if(bottoms.containsKey(inputBar)){
-                        priBottom = bottoms.get(inputBar);
-                    }else {
-                        int[] location = new int[2];
-                        inputBar.getLocationOnScreen(location);
-                        priBottom= location[1]+inputBar.getHeight();
-                        bottoms.put(inputBar,priBottom);
-                    }
-//                    if(priBottom > top) {
+//                    if(bottoms.containsKey(inputBar)){
+//                        priBottom = bottoms.get(inputBar);
+//                    }else {
+//                        int[] location = new int[2];
+//                        inputBar.getLocationOnScreen(location);
+//                        priBottom= location[1]+inputBar.getHeight();
+//                        bottoms.put(inputBar,priBottom);
+//                    }
+                    int[] location = new int[2];
+                    inputBar.getLocationOnScreen(location);
+                    priBottom= location[1]+inputBar.getHeight();
+
                     float y = keyboardRect.top - priBottom;
-                    if(null==listener||!listener.onScroll(keyboardRect,y)){
-                        inputBar.setTranslationY(y);
+                    if (0 != y) {
+                        if(null==listener||!listener.onScroll(keyboardRect,y)){
+                            inputBar.setTranslationY(y);
+                        }
                     }
+
 //                    }
                 }else{
                     if(null==listener||!listener.onScroll(keyboardRect,0)){

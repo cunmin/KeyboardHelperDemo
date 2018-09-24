@@ -24,9 +24,9 @@ public class ScrollViewActivity extends AppCompatActivity {
         RegisterHelper.compatScrollInput(this, new RegisterHelper.ScrollListener() {
             @Override
             public boolean onScroll(Rect keyboardRect, float y) {
-                if(y>0){
-                    return true;
-                }
+//                if(y>0){
+//                    return true;
+//                }
                 parent.setTranslationY(y);
                 return true;
             }

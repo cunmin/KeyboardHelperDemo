@@ -100,7 +100,7 @@ public class PannelView extends LinearLayout{
                     setTranslationY(0);
                     setInputState();
                     if(null!=listener){
-                        listener.onShowInput(keyboardRect.height());
+                        listener.onShowInput(keyboardRect,keyboardRect.height());
                     }
                 }else{
                     if(!isShowPannel()&&!interruptDown){
