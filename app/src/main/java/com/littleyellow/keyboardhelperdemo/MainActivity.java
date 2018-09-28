@@ -1,17 +1,22 @@
 package com.littleyellow.keyboardhelperdemo;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.littleyellow.keyboardhelper.ActionListener;
 import com.littleyellow.keyboardhelper.PannelView;
 import com.littleyellow.keyboardhelper.RegisterHelper;
+import com.littleyellow.keyboardhelper.statusbar.StatusBarView;
+
+import static com.littleyellow.keyboardhelper.statusbar.StatusBarUtil.getStatusBarHeight;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,8 +27,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 //        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+//
+
         setContentView(R.layout.activity_main);
-        StatusBarUtil.setColor(this,0,R.drawable.bg_title_gradient);
+//        setBarDarkFont(this, Color.YELLOW);
+        int height = getStatusBarHeight(this);
+        StatusBarView.setColor(this, Color.parseColor("#ffffff"));
+//        StatusBarColor.setColor(this, Color.RED);
+
         final View inputBar = findViewById(R.id.input_bar_ll);
 //        final View pannel = findViewById(R.id.pannel);
         final ImageView toggle_iv = (ImageView) findViewById(R.id.toggle_iv);
@@ -37,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
 //                InputMethodHelper.toggleInputMethod(view,show=!show);
             }
         });
+        final EditText inputEt = (EditText) findViewById(R.id.input_et);
         RegisterHelper.compatInputPanel(this,pannelView);
         pannelView.setListener(new ActionListener() {
             @Override
@@ -61,6 +73,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onHeightChange(int changeHeight) {
                 Log.e("PannelView","onHeightChange"+changeHeight);
+            }
+
+            @Override
+            public EditText actionEditText() {
+                return inputEt;
             }
         });
 

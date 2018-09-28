@@ -1,6 +1,7 @@
 package com.littleyellow.keyboardhelper;
 
 import android.graphics.Rect;
+import android.widget.EditText;
 
 /**
  * Created by Administrator on 2018/9/22 0022.
@@ -16,4 +17,5 @@ public interface ActionListener {
 
     void onHeightChange(int changeHeight);
 
+    EditText actionEditText();
 }

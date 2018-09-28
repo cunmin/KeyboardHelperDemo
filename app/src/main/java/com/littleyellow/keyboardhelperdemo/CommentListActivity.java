@@ -1,5 +1,6 @@
 package com.littleyellow.keyboardhelperdemo;
 
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 
 import com.littleyellow.keyboardhelper.ActionListener;
 import com.littleyellow.keyboardhelper.PannelView;
+import com.littleyellow.keyboardhelper.statusbar.StatusBarView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +38,10 @@ public class CommentListActivity extends AppCompatActivity implements CommentAda
         super.onCreate(savedInstanceState);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         setContentView(R.layout.activity_comment_list_layout);
-        StatusBarUtil.setColor(this,0,R.drawable.bg_title_gradient);
+        View stausBar = StatusBarView.setColor(this, Color.parseColor("#9A7750"));
+        if(null!=stausBar){
+            stausBar.setBackgroundResource(R.drawable.bg_title_gradient);
+        }
         recyclerview = (RecyclerView) findViewById(R.id.recyclerview);
         pannelView = (PannelView) findViewById(R.id.pannel_view);
         input_et = (EditText) findViewById(R.id.input_et);
@@ -91,6 +96,11 @@ public class CommentListActivity extends AppCompatActivity implements CommentAda
             @Override
             public void onHeightChange(int changeHeight) {
                 Log.e("PannelView","onHeightChange"+changeHeight);
+            }
+
+            @Override
+            public EditText actionEditText() {
+                return null;
             }
         });
 
