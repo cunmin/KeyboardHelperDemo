@@ -16,7 +16,7 @@ public interface IShowHandler {
 
     int STATE_PANNEL = View.GONE;
 
-    void showDefault();
+    int showDefault();
 
     void showInput();
 

@@ -25,9 +25,10 @@ public class FSShowHandler implements IShowHandler{
     }
 
     @Override
-    public void showDefault() {
+    public int showDefault() {
         frameLayout.setVisibility(GONE);
         inputBaffle.setVisibility(STATE_DEFAULT);
+        return frameLayout.getHeight();
     }
 
     @Override

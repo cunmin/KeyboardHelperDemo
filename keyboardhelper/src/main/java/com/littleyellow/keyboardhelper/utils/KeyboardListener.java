@@ -1,4 +1,4 @@
-package com.littleyellow.keyboardhelper;
+package com.littleyellow.keyboardhelper.utils;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -15,18 +15,16 @@ import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-import com.littleyellow.keyboardhelper.utils.KBSharedPreferences;
-
 import static android.view.inputmethod.InputMethodManager.SHOW_FORCED;
 
 
 @TargetApi(14)
-public class InputMethodHelper {
+public class KeyboardListener {
     private ViewTreeObserver.OnGlobalLayoutListener onGlobalLayoutListener;
     private OnInputMethodListener onInputMethodListener;
     private Rect windowContentRect;
     private Rect keyboardRect;
-    private InputMethodHelper(OnInputMethodListener listener) {
+    private KeyboardListener(OnInputMethodListener listener) {
         this.onInputMethodListener = listener;
     }
     private void onAttach(Activity activity) {
@@ -64,7 +62,7 @@ public class InputMethodHelper {
         if (host == null) {
             return;
         }
-        final InputMethodHelper methodHelper = new InputMethodHelper(onInputMethodListener);
+        final KeyboardListener methodHelper = new KeyboardListener(onInputMethodListener);
         host.getApplication().registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
@@ -106,7 +104,7 @@ public class InputMethodHelper {
         if (fragment == null) {
             return;
         }
-        final InputMethodHelper methodHelper = new InputMethodHelper(onInputMethodListener);
+        final KeyboardListener methodHelper = new KeyboardListener(onInputMethodListener);
         fragment.getFragmentManager().registerFragmentLifecycleCallbacks(new FragmentManager.FragmentLifecycleCallbacks() {
             @Override
             public void onFragmentViewCreated(FragmentManager fm, Fragment f, View v, Bundle savedInstanceState) {

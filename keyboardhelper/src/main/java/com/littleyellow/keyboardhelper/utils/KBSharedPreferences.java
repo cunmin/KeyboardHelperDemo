@@ -23,7 +23,7 @@ public class KBSharedPreferences {
     }
 
     public static void setDefKeyboardHeight(Context context, int height) {
-        if (sDefKeyboardHeight != height&&0!=height) {
+        if (sDefKeyboardHeight != height&&0<height) {
             PreferenceManager.getDefaultSharedPreferences(context).edit().putInt(EXTRA_DEF_KEYBOARDHEIGHT, height).commit();
             sDefKeyboardHeight = height;
         }

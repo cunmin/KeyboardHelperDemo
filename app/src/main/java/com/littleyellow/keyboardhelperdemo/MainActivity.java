@@ -1,5 +1,6 @@
 package com.littleyellow.keyboardhelperdemo;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -15,20 +16,22 @@ import com.littleyellow.keyboardhelper.ActionListener;
 import com.littleyellow.keyboardhelper.PannelView;
 import com.littleyellow.keyboardhelper.RegisterHelper;
 import com.littleyellow.keyboardhelper.statusbar.StatusBarView;
+import com.squareup.leakcanary.LeakCanary;
 
 import static com.littleyellow.keyboardhelper.statusbar.StatusBarUtil.getStatusBarHeight;
 
 public class MainActivity extends AppCompatActivity {
 
-    boolean show = true;
+    static Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        LeakCanary.install(getApplication());
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 //
-
+        activity = this;
         setContentView(R.layout.activity_main);
 //        setBarDarkFont(this, Color.YELLOW);
         int height = getStatusBarHeight(this);
@@ -45,10 +48,11 @@ public class MainActivity extends AppCompatActivity {
                 pannelView.toggle();
 
 
-//                InputMethodHelper.toggleInputMethod(view,show=!show);
+//                KeyboardListener.toggleInputMethod(view,show=!show);
             }
         });
         final EditText inputEt = (EditText) findViewById(R.id.input_et);
+        final EditText edittext = (EditText) findViewById(R.id.edittext);
         RegisterHelper.compatInputPanel(this,pannelView);
         pannelView.setListener(new ActionListener() {
             @Override
@@ -86,6 +90,27 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 pannelView.setVisibility(View.VISIBLE);
                 pannelView.showInput();
+            }
+        });
+
+        findViewById(R.id.StatusBarViewActivity).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,StatusBarViewActivity.class));
+            }
+        });
+
+        findViewById(R.id.StatusBarColorActivity).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,StatusBarColorActivity.class));
+            }
+        });
+
+        findViewById(R.id.StatusBarFragmentActivity).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,StatusBarFragmentActivity.class));
             }
         });
 

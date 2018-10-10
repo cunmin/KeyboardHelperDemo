@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 
+import com.littleyellow.keyboardhelper.utils.KeyboardListener;
+
 import java.util.HashMap;
 
 /**
@@ -19,7 +21,7 @@ public class RegisterHelper {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT||null==inputBar) {
             return;
         }
-        InputMethodHelper.assistActivity(activity, new InputMethodHelper.OnInputMethodListener() {
+        KeyboardListener.assistActivity(activity, new KeyboardListener.OnInputMethodListener() {
 
             float priBottom = 0;
 
@@ -43,7 +45,7 @@ public class RegisterHelper {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT||null==panel) {
             return;
         }
-//        InputMethodHelper.assistActivity(activity, new InputMethodHelper.OnInputMethodListener() {
+//        KeyboardListener.assistActivity(activity, new KeyboardListener.OnInputMethodListener() {
 //
 //            @Override
 //            public void onInputMethodStatusChanged(Rect keyboardRect, boolean show) {
@@ -75,7 +77,7 @@ public class RegisterHelper {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT||null==inputBar) {
             return;
         }
-        InputMethodHelper.assistFragment(fragment, new InputMethodHelper.OnInputMethodListener() {
+        KeyboardListener.assistFragment(fragment, new KeyboardListener.OnInputMethodListener() {
             float priBottom = 0;
             @Override
             public void onInputMethodStatusChanged(Rect keyboardRect, boolean show) {
@@ -97,7 +99,7 @@ public class RegisterHelper {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
             return;
         }
-        InputMethodHelper.assistActivity(activity, new InputMethodHelper.OnInputMethodListener() {
+        KeyboardListener.assistActivity(activity, new KeyboardListener.OnInputMethodListener() {
 
             HashMap<View,Float> bottoms = new HashMap<View, Float>();
 

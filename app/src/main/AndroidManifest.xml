@@ -17,6 +17,9 @@
         </activity>
         <activity android:name=".ScrollViewActivity"/>
         <activity android:name=".CommentListActivity"/>
+        <activity android:name=".StatusBarViewActivity"/>
+        <activity android:name=".StatusBarColorActivity"/>
+        <activity android:name=".StatusBarFragmentActivity"/>
     </application>
 
 </manifest>

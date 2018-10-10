@@ -16,7 +16,7 @@ import com.littleyellow.keyboardhelper.handler.FSShowHandler;
 import com.littleyellow.keyboardhelper.handler.IShowHandler;
 import com.littleyellow.keyboardhelper.handler.NFSShowHandler;
 import com.littleyellow.keyboardhelper.statusbar.StatusBarUtil;
-import com.littleyellow.keyboardhelper.utils.KBSharedPreferences;
+import com.littleyellow.keyboardhelper.utils.KeyboardListener;
 import com.littleyellow.keyboardhelper.utils.ViewUtils;
 
 import static com.littleyellow.keyboardhelper.handler.IShowHandler.STATE_DEFAULT;
@@ -41,11 +41,7 @@ public class PannelView extends LinearLayout{
 
     private EditText editText;
 
-    private View inputBarView;
-
-    private int parentBottom;
-
-    private final IShowHandler showHandler;
+    private IShowHandler showHandler;
 
     public PannelView(Context context) {
         this(context, null);
@@ -59,10 +55,6 @@ public class PannelView extends LinearLayout{
         super(context, attrs, defStyleAttr);
         frameLayout  = new FrameLayout(context);
         inputBaffle = new View(context);
-        Activity activity = (Activity) context;
-        showHandler = StatusBarUtil.isFullScreen(activity)?
-                      new FSShowHandler(frameLayout,inputBaffle):
-                      new NFSShowHandler(this,inputBaffle);
         setOrientation(VERTICAL);
     }
 
@@ -71,7 +63,6 @@ public class PannelView extends LinearLayout{
         if(getChildCount()!=2){
             throw new IllegalArgumentException("输入条为第一个子控件，选择板为第二个子控件");
         }
-        inputBarView = getChildAt(0);
         View view = getChildAt(1);
         removeView(view);
         addView(frameLayout,ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -79,64 +70,66 @@ public class PannelView extends LinearLayout{
         inputBaffle.setBackgroundColor(Color.WHITE);
         frameLayout.addView(inputBaffle, ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
         ViewUtils.initHeight(frameLayout);
+        registerListener();
+    }
+
+    private void registerListener(){
         final Activity activity = (Activity) getContext();
-        post(new Runnable() {
-            @Override
-            public void run() {
-                View parent = activity.findViewById(android.R.id.content);
-                parentBottom = parent.getBottom();
-            }
-        });
-        InputMethodHelper.assistActivity(activity, new InputMethodHelper.OnInputMethodListener() {
-
-            @Override
-            public void onInputMethodStatusChanged(Rect keyboardRect, boolean show) {
-                EditText view = getEditText();
-                View curnView = activity.getCurrentFocus();
-                if(view!=curnView){
-                    checkHeight(keyboardRect);
-                    showDefault();
-                    return;
-                }
-                if(show){
-                    checkHeight(keyboardRect);
-//                    setTranslationY(0);
-                    setInputState(keyboardRect);
-                    if(null!=listener){
-                        listener.onShowInput(keyboardRect,keyboardRect.height());
+        KeyboardHelper.newBuilder()
+                .host(activity)
+                .onInputMethodListener(new KeyboardListener.OnInputMethodListener() {
+                    @Override
+                    public void onInputMethodStatusChanged(Rect keyboardRect, boolean show) {
+                        onInputStatusChanged(activity,keyboardRect,show);
                     }
-                }else{
-                    if(!isShowPannel()&&!interruptDown){
-                        showDefault();
+                })
+                .build();
+    }
 
-                    }else{
-                        setPannelState();
-                        if(null!=listener){
-                            listener.onShowPannel(frameLayout.getHeight());
-                        }
-                    }
-                }
-                interruptDown = false;
+    private void onInputStatusChanged(Activity activity,Rect keyboardRect, boolean show){
+        EditText view = getEditText();
+        View curnView = activity.getCurrentFocus();
+        if(view!=curnView&&!isShowPannel()){
+            checkHeight(keyboardRect);
+            showDefault();
+            return;
+        }
+        if(show){
+            checkHeight(keyboardRect);
+            setInputState(keyboardRect);
+            if(null!=listener){
+                listener.onShowInput(keyboardRect,keyboardRect.height());
             }
-        });
+        }else{
+            if(!isShowPannel()&&!interruptDown){
+                showDefault();
+
+            }else{
+                setPannelState();
+                if(null!=listener){
+                    listener.onShowPannel(frameLayout.getHeight());
+                }
+            }
+        }
+        interruptDown = false;
     }
 
     private void checkHeight(Rect keyboardRect){
-        if(showHandler.checkHeight(keyboardRect,frameLayout)&&null!=listener){
+        if(getShowHandler().checkHeight(keyboardRect,frameLayout)&&null!=listener){
             listener.onHeightChange(keyboardRect.height());
         }
     }
 
-    private void setDefalutState(){
-        showHandler.showDefault();
+    private int setDefalutState(){
+        return getShowHandler().showDefault();
     }
 
     private void setInputState(Rect keyboardRect){
-        showHandler.showInput();
+        getShowHandler().showInput();
     }
 
     private void setPannelState(){
-        showHandler.showPannel();
+        getShowHandler().showPannel();
     }
 
     private EditText getEditText(){
@@ -222,25 +215,14 @@ public class PannelView extends LinearLayout{
     }
 
     public void showDefault(){
-        int validPanelHeight = KBSharedPreferences.getDefKeyboardHeight(getContext());
-//        setTranslationY(validPanelHeight);
-        setDefalutState();
+        int validPanelHeight = setDefalutState();
         if(null!=listener){
             listener.onShowDefault(validPanelHeight);
         }
     }
 
     public void toggle(){
-        int bottom = inputBarView.getBottom();
-        final Activity activity = (Activity) getContext();
-        View parent = activity.findViewById(android.R.id.content);
-        int[] location = new int[2];
-        parent.getLocationOnScreen(location);
-        int curBottom= location[1]+parent.getHeight();
-        int top = parent.getTop();
-        int bottom2 = parent.getBottom();
         if(isShowDefault()){
-//            setTranslationY(0);
             setPannelState();
             if(null!=listener){
                 listener.onShowPannel(frameLayout.getHeight());
@@ -254,5 +236,15 @@ public class PannelView extends LinearLayout{
 
     public void setListener(ActionListener listener) {
         this.listener = listener;
+    }
+
+    public IShowHandler getShowHandler() {
+        if(null==showHandler) {
+            Activity activity = (Activity) frameLayout.getContext();
+            showHandler = StatusBarUtil.isFullScreen(activity) ?
+                    new FSShowHandler(frameLayout, inputBaffle) :
+                    new NFSShowHandler(this,frameLayout,inputBaffle);
+        }
+        return showHandler;
     }
 }
