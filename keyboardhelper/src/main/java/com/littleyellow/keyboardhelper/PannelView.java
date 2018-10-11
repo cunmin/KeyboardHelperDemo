@@ -5,9 +5,11 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -31,6 +33,8 @@ import static com.littleyellow.keyboardhelper.utils.KBUtils.showSoftInput;
 
 public class PannelView extends LinearLayout{
 
+    private Activity activity;
+
     private final FrameLayout frameLayout;
 
     private final View inputBaffle;
@@ -42,6 +46,8 @@ public class PannelView extends LinearLayout{
     private EditText editText;
 
     private IShowHandler showHandler;
+
+    private boolean isFullScreen;
 
     public PannelView(Context context) {
         this(context, null);
@@ -55,7 +61,12 @@ public class PannelView extends LinearLayout{
         super(context, attrs, defStyleAttr);
         frameLayout  = new FrameLayout(context);
         inputBaffle = new View(context);
+        activity = (Activity) context;
         setOrientation(VERTICAL);
+    }
+
+    public static void setInputMode(Activity activity){
+        activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
     }
 
     @Override
@@ -70,6 +81,7 @@ public class PannelView extends LinearLayout{
         inputBaffle.setBackgroundColor(Color.WHITE);
         frameLayout.addView(inputBaffle, ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
         ViewUtils.initHeight(frameLayout);
+        frameLayout.setVisibility(GONE);
         registerListener();
     }
 
@@ -87,6 +99,7 @@ public class PannelView extends LinearLayout{
     }
 
     private void onInputStatusChanged(Activity activity,Rect keyboardRect, boolean show){
+        Log.e("onInputStatusChanged","show:"+show);
         EditText view = getEditText();
         View curnView = activity.getCurrentFocus();
         if(view!=curnView&&!isShowPannel()){
@@ -239,11 +252,13 @@ public class PannelView extends LinearLayout{
     }
 
     public IShowHandler getShowHandler() {
-        if(null==showHandler) {
-            Activity activity = (Activity) frameLayout.getContext();
-            showHandler = StatusBarUtil.isFullScreen(activity) ?
-                    new FSShowHandler(frameLayout, inputBaffle) :
+        boolean isFullScreen = StatusBarUtil.isFullScreen(activity);
+        if(null==showHandler||this.isFullScreen!=isFullScreen) {
+            showHandler = isFullScreen ?
+                    new FSShowHandler(this,frameLayout, inputBaffle) :
                     new NFSShowHandler(this,frameLayout,inputBaffle);
+            this.isFullScreen = isFullScreen;
+            frameLayout.setVisibility(VISIBLE);
         }
         return showHandler;
     }

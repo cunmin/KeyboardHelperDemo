@@ -80,10 +80,23 @@ public class StatusBarUtil {
     public static boolean isFullScreen(final Activity activity) {
         //noinspection SimplifiableIfStatement
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            return (activity.getWindow().getDecorView().getSystemUiVisibility()
-                    & View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN) != 0;
+//            boolean isFull = (activity.getWindow().getDecorView().getSystemUiVisibility()
+//                    & View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN) != 0;
+            final ViewGroup decorView = (ViewGroup) activity.findViewById(android.R.id.content);
+            View view0 = (decorView).getChildAt(0);
+            boolean isFits = null==view0?false:!view0.getFitsSystemWindows();
+            return isFits;
         }
         return false;
+    }
+
+    public  static View setFitsSystemWindows(Activity activity,boolean isFits) {
+        ViewGroup decorView = (ViewGroup) activity.findViewById(android.R.id.content);
+        View view0 = (decorView).getChildAt(0);
+        if(null!=view0){
+            view0.setFitsSystemWindows(isFits);
+        }
+        return view0;
     }
 
 }

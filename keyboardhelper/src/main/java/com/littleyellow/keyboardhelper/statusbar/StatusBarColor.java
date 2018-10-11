@@ -9,10 +9,10 @@ import android.graphics.drawable.ShapeDrawable;
 import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import static android.os.Build.VERSION_CODES.KITKAT;
+import static com.littleyellow.keyboardhelper.statusbar.StatusBarUtil.setFitsSystemWindows;
 
 /**
  * Created by 小黄 on 2018/9/26.
@@ -54,6 +54,7 @@ public class StatusBarColor {
                 }
                 activity.getWindow().getDecorView().setSystemUiVisibility(visibility);
             }
+            setFitsSystemWindows(activity,true);
             return StatusBarUtil.getStatusBarHeight(activity);
         }
         else{
@@ -71,11 +72,9 @@ public class StatusBarColor {
     private static int KITKAT_SetColor(Activity activity, @ColorInt int stausColor,@ColorInt int contentColor){
         if (Build.VERSION.SDK_INT >= KITKAT) {
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            ViewGroup decorView = (ViewGroup) activity.findViewById(android.R.id.content);
-            View view0 = (decorView).getChildAt(0);
+            View view0 = setFitsSystemWindows(activity,true);
             int height = StatusBarUtil.getStatusBarHeight(activity);
             if(null!=view0){
-                view0.setFitsSystemWindows(true);
                 ShapeDrawable statusDrawable = new ShapeDrawable();
                 statusDrawable.getPaint().setColor(stausColor);
                 statusDrawable.getPaint().setStyle(Paint.Style.FILL);

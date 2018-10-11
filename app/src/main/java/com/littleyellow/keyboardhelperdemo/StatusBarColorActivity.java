@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -15,6 +14,8 @@ import com.littleyellow.keyboardhelper.ActionListener;
 import com.littleyellow.keyboardhelper.PannelView;
 import com.littleyellow.keyboardhelper.RegisterHelper;
 import com.littleyellow.keyboardhelper.statusbar.StatusBarColor;
+
+import static com.littleyellow.keyboardhelper.PannelView.setInputMode;
 
 /**
  * Created by 小黄 on 2018/10/9.
@@ -25,10 +26,9 @@ public class StatusBarColorActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         setContentView(R.layout.activity_status_bar_color);
         StatusBarColor.setColor(this, Color.RED);
-
+        setInputMode(this);
         final ImageView toggle_iv = (ImageView) findViewById(R.id.toggle_iv);
         final PannelView pannelView = (PannelView) findViewById(R.id.pannel_view);
         findViewById(R.id.toggle_iv).setOnClickListener(new View.OnClickListener() {

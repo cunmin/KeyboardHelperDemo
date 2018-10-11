@@ -6,12 +6,13 @@ import android.os.Bundle;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.littleyellow.keyboardhelper.RegisterHelper;
 import com.littleyellow.keyboardhelper.statusbar.StatusBarColor;
+
+import static com.littleyellow.keyboardhelper.PannelView.setInputMode;
 
 /**
  * Created by Administrator on 2018/9/22 0022.
@@ -22,8 +23,8 @@ public class ScrollViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         setContentView(R.layout.activity_scroll_layout);
+        setInputMode(this);
 //        StatusBarUtil.setColor(this,0,R.drawable.bg_title_gradient);
         final View parent = findViewById(R.id.parent);
         RegisterHelper.compatScrollInput(this, new RegisterHelper.ScrollListener() {

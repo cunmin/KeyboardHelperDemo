@@ -36,7 +36,6 @@ public class CommentListActivity extends AppCompatActivity implements CommentAda
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         setContentView(R.layout.activity_comment_list_layout);
         View stausBar = StatusBarView.setColor(this, Color.parseColor("#9A7750"));
         if(null!=stausBar){
