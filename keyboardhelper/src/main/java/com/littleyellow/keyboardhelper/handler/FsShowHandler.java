@@ -6,10 +6,8 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.littleyellow.keyboardhelper.PannelView;
+import com.littleyellow.keyboardhelper.utils.KBSharedPreferences;
 import com.littleyellow.keyboardhelper.utils.ViewUtils;
-
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
 
 /**
  * Created by 小黄 on 2018/9/28.
@@ -34,9 +32,10 @@ public class FSShowHandler implements IShowHandler{
 
     @Override
     public int showDefault() {
-        frameLayout.setVisibility(GONE);
+        int y = getTranslationY();
+        pannelView.setTranslationY(y);
         inputBaffle.setVisibility(STATE_DEFAULT);
-        return frameLayout.getHeight();
+        return y;
     }
 
     @Override
@@ -44,23 +43,32 @@ public class FSShowHandler implements IShowHandler{
         if(STATE_INPUT == inputBaffle.getVisibility()){
             return;
         }
-        frameLayout.setVisibility(VISIBLE);
+        pannelView.setTranslationY(0);
         inputBaffle.setVisibility(STATE_INPUT);
     }
 
     @Override
     public void showPannel() {
-        frameLayout.setVisibility(VISIBLE);
+        pannelView.setTranslationY(0);
         inputBaffle.setVisibility(STATE_PANNEL);
     }
 
     @Override
     public boolean checkHeight(Rect keyboardRect,FrameLayout frameLayout) {
+        boolean isChange;
+        //首次弹起或者用户自己改变键盘高度
         if(keyboardRect.height()!=frameLayout.getHeight()){
             ViewUtils.initHeight(frameLayout);
-            return true;
+            pannelView.setTranslationY(0);
+            isChange = true;
         }else{
-            return false;
+            isChange = false;
         }
+        return isChange;
+    }
+
+    private int getTranslationY(){
+        int kBHeight = KBSharedPreferences.getDefKeyboardHeight(pannelView.getContext());
+        return  kBHeight;
     }
 }

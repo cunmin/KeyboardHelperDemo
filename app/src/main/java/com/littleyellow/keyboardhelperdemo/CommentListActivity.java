@@ -8,7 +8,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -18,6 +17,8 @@ import com.littleyellow.keyboardhelper.statusbar.StatusBarView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.littleyellow.keyboardhelper.utils.ViewUtils.getScreenHeight;
 
 /**
  * Created by Administrator on 2018/9/22 0022.
@@ -32,6 +33,10 @@ public class CommentListActivity extends AppCompatActivity implements CommentAda
     private EditText input_et;
 
     private View focusView;
+
+    private int position;
+
+    private LinearLayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,12 +55,16 @@ public class CommentListActivity extends AppCompatActivity implements CommentAda
         }
         CommentAdapter adapter = new CommentAdapter(data,this);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+        layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
         recyclerview.setLayoutManager(layoutManager);
         recyclerview.setAdapter(adapter);
-
+        int screenHeight = getScreenHeight(this);
+//        recyclerview.setPadding(0,screenHeight,0,0);
+//        recyclerview.setClipChildren(false);
+        pannelView.boundRecylerview(this,recyclerview.getLayoutParams());
         final ImageView toggle_iv = (ImageView) findViewById(R.id.toggle_iv);
         final PannelView pannelView = (PannelView) findViewById(R.id.pannel_view);
+        final EditText inputEt = (EditText) findViewById(R.id.input_et);
         findViewById(R.id.toggle_iv).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,6 +77,8 @@ public class CommentListActivity extends AppCompatActivity implements CommentAda
                 Log.e("PannelView","onShowDefault"+pannelHeight);
                 toggle_iv.setImageResource(R.mipmap.icon_face);
                 pannelView.setVisibility(View.INVISIBLE);
+//                recyclerview.setClipChildren(true);
+                recyclerview.setTranslationY(0);
             }
 
             @Override
@@ -81,7 +92,8 @@ public class CommentListActivity extends AppCompatActivity implements CommentAda
                     int priBottom = location[1] + focusView.getHeight();
                     int top = pannelView.getTop();
                     int y =  top- priBottom;
-                    recyclerview.scrollBy(0, y);
+//                    recyclerview.setClipChildren(false);
+                    recyclerview.setTranslationY(y);
                     focusView = null;
                 }
             }
@@ -99,7 +111,7 @@ public class CommentListActivity extends AppCompatActivity implements CommentAda
 
             @Override
             public EditText actionEditText() {
-                return null;
+                return inputEt;
             }
         });
 
@@ -112,9 +124,12 @@ public class CommentListActivity extends AppCompatActivity implements CommentAda
 //        });
     }
 
+
+
     @Override
-    public void onClick(View view,String msg) {
+    public void onClick(View view,String msg,int positon) {
         focusView = view;
+        position = positon;
         String hint = input_et.getHint().toString();
         if(!hint.equals("评论:"+msg)){
             input_et.setHint("评论:"+msg);

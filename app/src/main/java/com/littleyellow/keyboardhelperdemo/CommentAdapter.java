@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import static com.littleyellow.keyboardhelper.utils.ViewUtils.getScreenHeight;
+
 /**
  * Created by Administrator on 2018/9/24 0024.
  */
@@ -34,7 +36,14 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
+        if(position==0){
+            int screenHeight = getScreenHeight(holder.itemView.getContext());
+            holder.itemView.setPadding(0,screenHeight,0,0);
+        }else{
+            holder.itemView.setPadding(0,0,0,0);
+        }
+
         holder.NameTv.setText("我是"+position);
         holder.contentTv.setText("今天是"+position+"号");
         holder.comment1Tv.setText("我来评论1");
@@ -43,13 +52,13 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         holder.comment1Tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCallback.onClick(holder.comment1Tv,holder.comment1Tv.getText().toString());
+                mCallback.onClick(holder.comment1Tv,holder.comment1Tv.getText().toString(),position);
             }
         });
         holder.comment2Tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCallback.onClick(holder.comment2Tv,holder.comment2Tv.getText().toString());
+                mCallback.onClick(holder.comment2Tv,holder.comment2Tv.getText().toString(),position);
             }
         });
     }
@@ -78,6 +87,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     }
 
     public interface CommentCallback{
-        void onClick(View view,String msg);
+        void onClick(View view,String msg,int positon);
     }
 }

@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.littleyellow.keyboardhelper.handler.FSShowHandler;
 import com.littleyellow.keyboardhelper.handler.IShowHandler;
@@ -26,6 +27,7 @@ import static com.littleyellow.keyboardhelper.handler.IShowHandler.STATE_INPUT;
 import static com.littleyellow.keyboardhelper.handler.IShowHandler.STATE_PANNEL;
 import static com.littleyellow.keyboardhelper.utils.KBUtils.hideSoftInput;
 import static com.littleyellow.keyboardhelper.utils.KBUtils.showSoftInput;
+import static com.littleyellow.keyboardhelper.utils.ViewUtils.getScreenHeight;
 
 /**
  * Created by 小黄 on 2018/9/20.
@@ -235,6 +237,7 @@ public class PannelView extends LinearLayout{
     }
 
     public void toggle(){
+        int top = getTop();
         if(isShowDefault()){
             setPannelState();
             if(null!=listener){
@@ -262,4 +265,16 @@ public class PannelView extends LinearLayout{
         }
         return showHandler;
     }
+
+    public void boundRecylerview(Context context,ViewGroup.LayoutParams layoutParams){
+        int screenHeight = getScreenHeight(context);
+        if(layoutParams instanceof LinearLayout.LayoutParams){
+            ((LayoutParams) layoutParams).setMargins(0,-screenHeight,0,0);
+        }else if(layoutParams instanceof RelativeLayout.LayoutParams){
+            ((RelativeLayout.LayoutParams) layoutParams).setMargins(0,-screenHeight,0,0);
+        }else if(layoutParams instanceof FrameLayout.LayoutParams){
+            ((FrameLayout.LayoutParams) layoutParams).setMargins(0,-screenHeight,0,0);
+        }
+    }
+
 }

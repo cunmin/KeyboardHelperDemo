@@ -1,5 +1,6 @@
 package com.littleyellow.keyboardhelper.utils;
 
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -25,6 +26,11 @@ public class ViewUtils {
         return validPanelHeight;
     }
 
-
+    /**
+     * 得到设备屏幕的高度
+     */
+    public static int getScreenHeight(Context context) {
+        return context.getResources().getDisplayMetrics().heightPixels;
+    }
 
 }
