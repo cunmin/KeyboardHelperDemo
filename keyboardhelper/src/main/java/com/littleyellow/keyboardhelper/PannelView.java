@@ -237,7 +237,6 @@ public class PannelView extends LinearLayout{
     }
 
     public void toggle(){
-        int top = getTop();
         if(isShowDefault()){
             setPannelState();
             if(null!=listener){
@@ -254,7 +253,7 @@ public class PannelView extends LinearLayout{
         this.listener = listener;
     }
 
-    public IShowHandler getShowHandler() {
+    private IShowHandler getShowHandler() {
         boolean isFullScreen = StatusBarUtil.isFullScreen(activity);
         if(null==showHandler||this.isFullScreen!=isFullScreen) {
             showHandler = isFullScreen ?
@@ -269,12 +268,30 @@ public class PannelView extends LinearLayout{
     public void boundRecylerview(Context context,ViewGroup.LayoutParams layoutParams){
         int screenHeight = getScreenHeight(context);
         if(layoutParams instanceof LinearLayout.LayoutParams){
-            ((LayoutParams) layoutParams).setMargins(0,-screenHeight,0,0);
+            ((LayoutParams) layoutParams).setMargins(0,-screenHeight,0,-screenHeight);
         }else if(layoutParams instanceof RelativeLayout.LayoutParams){
-            ((RelativeLayout.LayoutParams) layoutParams).setMargins(0,-screenHeight,0,0);
+            ((RelativeLayout.LayoutParams) layoutParams).setMargins(0,-screenHeight,0,-screenHeight);
         }else if(layoutParams instanceof FrameLayout.LayoutParams){
-            ((FrameLayout.LayoutParams) layoutParams).setMargins(0,-screenHeight,0,0);
+            ((FrameLayout.LayoutParams) layoutParams).setMargins(0,-screenHeight,0,-screenHeight);
         }
     }
 
+    public int getOffset(View focusView){
+        if(null==focusView) {
+            return 0;
+        }
+        int[] location = new int[2];
+        focusView.getLocationOnScreen(location);
+        int priBottom = location[1] + focusView.getHeight();
+        getLocationOnScreen(location);
+        int top = location[1];
+        int y =  top- priBottom;
+        return y;
+    }
+
+    public int  test(){
+        final ViewGroup decorView = (ViewGroup) activity.findViewById(android.R.id.content);
+        int bottom = decorView.getBottom();
+        return bottom;
+    }
 }
