@@ -84,6 +84,7 @@ public class PannelView extends LinearLayout{
         frameLayout.addView(inputBaffle, ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
         ViewUtils.initHeight(frameLayout);
         frameLayout.setVisibility(GONE);
+//        showDefault();
         registerListener();
     }
 
@@ -101,7 +102,6 @@ public class PannelView extends LinearLayout{
     }
 
     private void onInputStatusChanged(Activity activity,Rect keyboardRect, boolean show){
-        Log.e("onInputStatusChanged","show:"+show);
         EditText view = getEditText();
         View curnView = activity.getCurrentFocus();
         if(view!=curnView&&!isShowPannel()){
@@ -118,15 +118,15 @@ public class PannelView extends LinearLayout{
         }else{
             if(!isShowPannel()&&!interruptDown){
                 showDefault();
-
             }else{
                 setPannelState();
                 if(null!=listener){
                     listener.onShowPannel(frameLayout.getHeight());
                 }
             }
+            interruptDown = false;
         }
-        interruptDown = false;
+        Log.e("onInputStatusChanged","show:"+show+",interruptDown:"+interruptDown);
     }
 
     private void checkHeight(Rect keyboardRect){
@@ -220,6 +220,7 @@ public class PannelView extends LinearLayout{
     public void showPannel(){
         interruptDown = true;
         hideSoftInput(getContext());
+        setPannelState();
     }
 
     public void showInput(){
