@@ -17,9 +17,42 @@ import butterknife.ButterKnife;
 
 public class Text implements Item {
 
-    private String photo;
+    private int photo;
     private String name;
     private String content;
+    private int res;
+
+    public int getRes() {
+        return res;
+    }
+
+    public void setRes(int res) {
+        this.res = res;
+    }
+
+    public int getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(int photo) {
+        this.photo = photo;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 
     @Override
     public int getLayout() {

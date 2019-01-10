@@ -16,6 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text=""
+        android:textColor="#0A6AAB"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:textSize="16sp"
@@ -39,12 +40,11 @@
         android:orientation="vertical"
         android:layout_toRightOf="@+id/logo"
         android:layout_below="@+id/content"
-        android:layout_marginTop="20dp"></LinearLayout>
+        android:layout_marginTop="10dp"></LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_below="@+id/replay_containner"
-        android:background="#080202"
-        android:layout_marginTop="20dp"/>
+        android:background="#080202"/>
 </RelativeLayout>

@@ -12,15 +12,14 @@
         android:scaleType="centerCrop"/>
     <ImageView
         android:id="@+id/user_photo_iv"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/big_image"
-        android:layout_marginTop="-30dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginTop="-40dp"
+        android:layout_marginRight="20dp"
         android:src="@mipmap/circle_user_photo"
-        android:scaleType="centerCrop"
-        android:padding="1dp"
+        android:padding="2dp"
         android:background="@android:color/white"/>
     <TextView
         android:id="@+id/user_name_tv"
@@ -28,7 +27,8 @@
         android:layout_height="wrap_content"
         android:textColor="@color/white"
         android:text="呵呵哒!"
-        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textSize="17sp"
         android:layout_toLeftOf="@+id/user_photo_iv"
         android:layout_alignBottom="@+id/big_image"
         android:layout_marginRight="20dp"

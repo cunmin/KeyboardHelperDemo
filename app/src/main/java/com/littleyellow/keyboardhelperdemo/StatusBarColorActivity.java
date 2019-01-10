@@ -70,4 +70,9 @@ public class StatusBarColorActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onMultiWindowModeChanged(boolean isInMultiWindowMode) {
+        super.onMultiWindowModeChanged(isInMultiWindowMode);
+    }
 }

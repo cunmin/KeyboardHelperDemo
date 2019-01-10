@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
         StatusBarView.setColor(this, Color.parseColor("#ffffff"));
 //        StatusBarColor.setColor(this, Color.RED);
 
-        final View inputBar = findViewById(R.id.input_bar_ll);
 //        final View pannel = findViewById(R.id.pannel);
         final ImageView toggle_iv = (ImageView) findViewById(R.id.toggle_iv);
         final PannelView pannelView = (PannelView) findViewById(R.id.pannel_view);
@@ -94,7 +93,9 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.StatusBarColorActivity).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,StatusBarColorActivity.class));
+                Intent intent= new Intent(MainActivity.this,StatusBarColorActivity.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
             }
         });
 

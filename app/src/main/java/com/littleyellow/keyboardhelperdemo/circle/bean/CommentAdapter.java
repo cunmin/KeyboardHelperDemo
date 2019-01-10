@@ -68,12 +68,42 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
 
         if(holder instanceof BigImage.ViewHolder){
-            ((BigImage.ViewHolder) holder).logo.setImageResource(R.mipmap.circle_user_photo);
+            final BigImage.ViewHolder viewHolder = (BigImage.ViewHolder) holder;
+            BigImage text = (BigImage) data.get(position);
+            viewHolder.logo.setImageResource(text.getPhoto());
+            viewHolder.name.setText(text.getName());
+            viewHolder.content.setText(text.getContent());
+            viewHolder.image1.setImageResource(text.getRes());
+            viewHolder.content.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mCallback.onClick(v,viewHolder.content.getText().toString(),position);
+                }
+            });
         }else if(holder instanceof ThreeImage.ViewHolder){
-            ((ThreeImage.ViewHolder) holder).logo.setImageResource(R.mipmap.circle_user_photo);
+            final ThreeImage.ViewHolder viewHolder = (ThreeImage.ViewHolder) holder;
+            ThreeImage text = (ThreeImage) data.get(position);
+            viewHolder.logo.setImageResource(text.getPhoto());
+            viewHolder.name.setText(text.getName());
+            viewHolder.content.setText(text.getContent());
+            viewHolder.content.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mCallback.onClick(v,viewHolder.content.getText().toString(),position);
+                }
+            });
         }else if(holder instanceof Text.ViewHolder){
-            ((Text.ViewHolder) holder).logo.setImageResource(R.mipmap.circle_user_photo);
-        }else if(holder instanceof Head.ViewHolder){
+            final Text.ViewHolder viewHolder = (Text.ViewHolder) holder;
+            Text text = (Text) data.get(position);
+            viewHolder.name.setText(text.getName());
+            viewHolder.logo.setImageResource(text.getPhoto());
+            viewHolder.content.setText(text.getContent());
+            viewHolder.content.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mCallback.onClick(v,viewHolder.content.getText().toString(),position);
+                }
+            });
         }
     }
 
